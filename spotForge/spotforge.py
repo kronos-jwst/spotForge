@@ -36,19 +36,24 @@ class SpotForge(object):
         self.priors = priors
 
 
-    def global_model(self, Tphot, deltaT, fspot):
+    def global_model(self, P_rot, inc, T_phot, params):
         """
         Fits the global spot temperature and fraction coverage from multi-color
         photometric light curves.
 
         Parameters
         ----------
-        Tphot : float
-           Initial guess for the temperature of the photosphere (in units K).
-        deltaT : float
-           Initial guess for the difference in temperature between the photosphere
-           and the spot (in units K).
-        fspot : float
-           Initial guess for the spot coverage fraction.
+        P_rot : float
+           The measured rotation period of the star (in units of days).
+        inc : float
+           The measured inclination of the star (in units of degrees).
+        T_phot : float
+           The temperature of the photosphere (in units of K).
+        params : dict
+           Dictionary of stellar properties. This dictionary must include:
+           - 'delta_T' : array, difference in temperature between the photosphere and
+                               the spots
+           - 'lon' : array, initial longitude (radians).
+           - 'lat' : array, initial latitude (radians)
+           - 'spot_rad' : array, angular radius of the spot (radians)
         """
-        
