@@ -109,6 +109,7 @@ def rotating_projected_spot_area(time, P_rot, inc, T_phot, params):
     T_spot_indiv = T_phot - delta_T
 
     def spot_area_i(t):
+        # Calculates the spot area as a function of time
         lon_i = lon + 2.0 * jnp.pi * (t / P_rot)
         mu = jnp.sin(lat) * jnp.cos(inc) + jnp.cos(lat) * jnp.sin(inc) * jnp.cos(lon_i)
 
@@ -119,6 +120,7 @@ def rotating_projected_spot_area(time, P_rot, inc, T_phot, params):
 
         T_spot = jnp.sum((T_spot_indiv * spot_vis)**4.0)
         return A, T_spot
+
 
     A_spot, T_eff_spot = jax.vmap(spot_area_i)(time)
     T_eff_total = ((1.0 - A_spot) * T_phot**4.0 + T_eff_spot)**0.25
@@ -154,7 +156,7 @@ def generate_light_curve(time, T_eff, wvl, rf):
         return jnp.trapezoid(I * rf, wvl)
 
     flux = jax.vmap(flux_over_time)(T_eff)
-    return flux#/jnp.nanmedian(flux)
+    return flux/jnp.nanmedian(flux)
 
 def generate_model(time, P_rot, inc, T_phot, params, wvl, rf):
     """
